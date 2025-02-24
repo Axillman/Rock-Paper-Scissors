@@ -1,123 +1,58 @@
-let score = JSON.parse(localStorage.getItem("score"));
+const getComputerChoice = () => {
+    const choices = ["rock", "paper", "scissors"];
+    const index = Math.floor(Math.random() * choices.length);
+    return choices[index];
+};
 
-function rockBtn() {
-  let num = Math.random();
+const getHumanChoice = () => {
+    const choice = prompt("Rock, Paper or Scissors").toLowerCase();
 
-  if (num >= 0 && num < 1 / 3) {
-    computerMove = "Rock";
-  } else if (num >= 1 / 3 && num < 2 / 3) {
-    computerMove = "Paper";
-  } else if (num >= 2 / 3 && num < 1) {
-    computerMove = "Scissors";
-  }
+    if (choice === "rock" || choice === "paper" || choice === "scissors") {
+        return choice;
+    }
+};
 
-  if (computerMove === "Rock") {
-    results = "Tie";
-  } else if (computerMove === "Paper") {
-    results = "Computer Won";
-  } else if (computerMove === "Scissors") {
-    results = "Human Won";
-  }
+humanScore = 0;
+computerScore = 0;
 
-  updateScores();
+const playRound = (humanChoice, computerChoice) => {
+    humanChoice = humanChoice.toLowerCase();
 
-  localStorage.setItem("score", JSON.stringify(score));
+    if (humanChoice === computerChoice) {
+        return `Its a tie!`;
+    }
 
-  display1ForScore();
+    if (
+        (humanChoice === "rock" && computerChoice === "scissors") ||
+        (humanChoice === "paper" && computerChoice === "rock") ||
+        (humanChoice === "scissors" && computerChoice === "paper")
+    ) {
+        humanScore++;
+        return `You win! ${humanChoice} beats ${computerChoice}`;
+    }
 
-  display2ForScore();
+    computerScore++;
+    return `You lose! ${computerChoice} beats ${humanChoice}`;
+};
 
-  display3ForScore();
-}
+const playGame = () => {
+    for (let i = 0; i < 3; i++) {
+        const humanChoice = getHumanChoice();
+        const computerChoice = getComputerChoice();
 
-function paperBtn() {
-  let num = Math.random();
+        playRound(humanChoice, computerChoice);
+    }
 
-  if (num >= 0 && num < 1 / 3) {
-    computerMove = "Rock";
-  } else if (num >= 1 / 3 && num < 2 / 3) {
-    computerMove = "Paper";
-  } else if (num >= 2 / 3 && num < 1) {
-    computerMove = "Scissors";
-  }
+    if (humanScore > computerScore) {
+        console.log(`You win the game!`);
+        console.log(`Human Score: ${humanScore}. Computer Score: ${computerScore}`)
+    }
+    if (humanScore < computerScore) {
+        console.log(`You lose the game!`);
+        console.log(
+            `Computer Score: ${computerScore}. Human Score: ${humanScore}`
+        );
+    }
+};
 
-  if (computerMove === "Rock") {
-    results = "Human Won";
-  } else if (computerMove === "Paper") {
-    results = "Tie";
-  } else if (computerMove === "Scissors") {
-    results = "Computer Won";
-  }
-
-  updateScores();
-
-  localStorage.setItem("score", JSON.stringify(score));
-
-  display1ForScore();
-
-  display2ForScore();
-
-  display3ForScore();
-}
-
-function scissorsBtn() {
-  let num = Math.random();
-
-  if (num >= 0 && num < 1 / 3) {
-    computerMove = "Rock";
-  } else if (num >= 1 / 3 && num < 2 / 3) {
-    computerMove = "Paper";
-  } else if (num >= 2 / 3 && num < 1) {
-    computerMove = "Scissors";
-  }
-
-  if (computerMove === "Rock") {
-    results = "Computer Won";
-  } else if (computerMove === "Paper") {
-    results = "Human Won";
-  } else if (computerMove === "Scissors") {
-    results = "Tie";
-  }
-
-  updateScores();
-
-  localStorage.setItem("score", JSON.stringify(score));
-
-  display1ForScore();
-
-  display2ForScore();
-
-  display3ForScore();
-}
-
-function resetBtn() {
-  score.Computer = 0;
-  score.Human = 0;
-  score.Ties = 0;
-}
-
-function updateScores() {
-  if (results === "Human Won") {
-    score.Human += 1;
-  } else if (results === "Computer Won") {
-    score.Computer += 1;
-  } else if (results === "Tie") {
-    score.Ties += 1;
-  }
-}
-
-function display1ForScore() {
-  document.getElementById(
-    "display1"
-  ).innerHTML = `Computer picked ${computerMove}`;
-}
-
-function display2ForScore() {
-  document.getElementById("display2").innerHTML = `${results}`;
-}
-
-function display3ForScore() {
-  document.getElementById(
-    "display3"
-  ).innerHTML = `Human: ${score.Human}. Computer: ${score.Computer}. Ties: ${score.Ties}`;
-}
+playGame();
