@@ -12,36 +12,33 @@ const getHumanChoice = () => {
     }
 };
 
-
-
 const playGame = () => {
- let  humanScore = 0;
-let computerScore = 0;
+    let humanScore = 0;
+    let computerScore = 0;
 
-const playRound = (humanChoice, computerChoice) => {
-    humanChoice = humanChoice.toLowerCase();
+    const playRound = (humanChoice, computerChoice) => {
+        humanChoice = humanChoice.toLowerCase();
 
-    if (humanChoice === computerChoice) {
-        console.log(`Its a tie!`);
+        if (humanChoice === computerChoice) {
+            console.log(`It's a tie!`);
+            return;
+        }
+
+        if (
+            (humanChoice === "rock" && computerChoice === "scissors") ||
+            (humanChoice === "paper" && computerChoice === "rock") ||
+            (humanChoice === "scissors" && computerChoice === "paper")
+        ) {
+            humanScore++;
+            console.log(`You win! ${humanChoice} beats ${computerChoice}`);
+            return;
+        }
+
+        computerScore++;
+        console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
         return;
-    }
+    };
 
-    if (
-        (humanChoice === "rock" && computerChoice === "scissors") ||
-        (humanChoice === "paper" && computerChoice === "rock") ||
-        (humanChoice === "scissors" && computerChoice === "paper")
-    ) {
-        humanScore++;
-        console.log(`You win! ${humanChoice} beats ${computerChoice}`);
-        return;
-    }
-
-    computerScore++;
-    console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
-    return;
-};
-  
-  
     for (let i = 0; i < 5; i++) {
         const humanSelection = getHumanChoice();
         const computerSelection = getComputerChoice();
@@ -61,6 +58,12 @@ const playRound = (humanChoice, computerChoice) => {
             `Computer Score: ${computerScore}. Human Score: ${humanScore}`
         );
     }
+    if (humanScore === computerScore) {
+      console.log("It's a tie!");
+      console.log(`Human Score: ${humanScore}. Computer Score: ${computerScore}`)
+      
+      
+      }
 };
 
 playGame();
